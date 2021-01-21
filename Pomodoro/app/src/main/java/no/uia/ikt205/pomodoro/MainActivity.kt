@@ -34,16 +34,16 @@ class MainActivity : AppCompatActivity() {
         countdown120 = findViewById<Button>(R.id.countDown_120)
 
         countdown30.setOnClickListener(){
-            timeToCountDownInMs = 30000L
+            timeToCountDownInMs = 1800000L
         }
         countdown60.setOnClickListener(){
-            timeToCountDownInMs = 60000L
+            timeToCountDownInMs = 3600000L
         }
         countdown90.setOnClickListener(){
-            timeToCountDownInMs = 90000L
+            timeToCountDownInMs = 6400000L
         }
         countdown120.setOnClickListener(){
-            timeToCountDownInMs = 120000L
+            timeToCountDownInMs = 7200000L
         }
         startButton.setOnClickListener(){
             if (coutdownDisplay.text == millisecondsToDescriptiveTime(0)){
