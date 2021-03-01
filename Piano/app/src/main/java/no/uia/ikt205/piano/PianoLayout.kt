@@ -5,16 +5,43 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_piano_layout.view.*
+import no.uia.ikt205.piano.data.Note
 import no.uia.ikt205.piano.databinding.FragmentPianoLayoutBinding
+import java.io.File
+import java.io.FileOutputStream
 
 class PianoLayout : Fragment() {
 
 
     private var _binding:FragmentPianoLayoutBinding ? = null
     private val binding get() = _binding!!
+
     private val whitekeys = listOf("C", "D", "E", "F", "G", "A", "B", "C2", "D2", "E2", "F2", "G2")
     private val blackkeys = listOf("C#", "D#", "F#", "G#", "A#", "C2#", "D2#", "F2#", "G2#")
+
+    private var score:MutableList<Note> = mutableListOf<Note>()
+
+
+    fun millisecondsToDescriptiveTime(ms:Long):String{
+        val sec = ((ms/1000)%60)
+        println("seconds in desc: $sec")
+        val milliseconds = ms
+        println("milliseconds in desc: $milliseconds")
+        var newTime:Long = 0
+        if(sec < 1){
+            newTime = milliseconds
+        } else {
+            newTime = (1000 - ms)
+        }
+
+        if (ms > 1000){
+            newTime = (1000-ms)*-1
+        }
+
+        return String.format("%02d.%02d", sec, newTime)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,36 +58,88 @@ class PianoLayout : Fragment() {
 
         val fragmentmanager = childFragmentManager
         var fragmentTransaction = fragmentmanager.beginTransaction()
+        var initialTime = System.currentTimeMillis()
 
         whitekeys.forEach{
             val whitePianoKey = WhiteKeysFragment.newInstance(it)
-
-            whitePianoKey.onKeyDown = {
-                println("White piano key down $it")
+            var startPlay:Long = 0
+            var endPlay:Long = 0
+            whitePianoKey.onKeyDown = {note ->
+                startPlay = System.currentTimeMillis()
+                println("White piano key down $note")
             }
 
-            whitePianoKey.onKeyUp = {
-                println("White piano key up $it")
+            whitePianoKey.onKeyUp = { note ->
+                endPlay = System.currentTimeMillis()
+                val totalPlay = endPlay - startPlay
+                println("White piano key up $note")
+                if (score.isNullOrEmpty()){
+                    initialTime = System.currentTimeMillis()
+                    val note = Note(it, millisecondsToDescriptiveTime(initialTime - initialTime), millisecondsToDescriptiveTime(totalPlay))
+                    score.add(note)
+                } else{
+                    val note = Note(it, millisecondsToDescriptiveTime(endPlay - initialTime), millisecondsToDescriptiveTime(totalPlay))
+                    score.add(note)
+                }
             }
 
             fragmentTransaction.add(view.whiteKeysLayout.id, whitePianoKey, "note_$it")
         }
 
         blackkeys.forEach{
-            val blackPianoKey = blackKeysFragment.newInstance(it)
+            val blackPianoKey = BlackKeysFragment.newInstance(it)
 
-            blackPianoKey.onKeyDown = {
-                println("Black piano key down $it")
+            var startPlay:Long = 0
+            var endPlay:Long = 0
+
+            blackPianoKey.onKeyDown = { note ->
+                startPlay = System.currentTimeMillis()
+                println("Black piano key down $note")
             }
 
-            blackPianoKey.onKeyUp = {
-                println("Black piano key up $it")
+            blackPianoKey.onKeyUp = { note ->
+                endPlay = System.currentTimeMillis()
+                val totalPlay = endPlay - startPlay
+                println("Black piano key up $note")
+                if (score.isNullOrEmpty()){
+                    initialTime = System.currentTimeMillis()
+                    val note = Note(it, millisecondsToDescriptiveTime(initialTime - initialTime), millisecondsToDescriptiveTime(totalPlay))
+                    score.add(note)
+                } else{
+                    val note = Note(it, millisecondsToDescriptiveTime(endPlay - initialTime), millisecondsToDescriptiveTime(totalPlay))
+                    score.add(note)
+                }
             }
 
             fragmentTransaction.add(view.blackKeysLayout.id, blackPianoKey, "note_$it")
         }
 
         fragmentTransaction.commit()
+
+
+        view.saveScoreBt.setOnClickListener{
+            var fileName = view.fileNameTextEdit.text.toString()
+            val path = this.activity?.getExternalFilesDir(null)
+            if(score.count() > 0 && fileName.isNotEmpty() && path != null){
+                fileName = "$fileName.txt"
+                if (!File(path,fileName).exists()){
+                    FileOutputStream(File(path, fileName), true).bufferedWriter().use { writer ->
+                        score.forEach{
+                            writer.write( "${it.toString()}\n")
+                        }
+                    }
+                    Toast.makeText(activity,"File sucessfully saved as $fileName", Toast.LENGTH_LONG).show()
+                    score.clear()
+                }
+                else{
+                    println("This file already exists")
+                }
+            }
+            else{
+                println("something is wrong")
+            }
+        }
+
         // Inflate the layout for this fragment
         return view
     }

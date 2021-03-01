@@ -11,13 +11,11 @@
     <LinearLayout
         android:id="@+id/blackKeysLayout"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
         />
     <LinearLayout
         android:id="@+id/whiteKeysLayout"
@@ -25,9 +23,29 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/fileNameTextEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:ems="15"
+        android:hint="@string/file_name_for_tune"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <Button
+        android:id="@+id/saveScoreBt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_tune_file"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         />
 
 
