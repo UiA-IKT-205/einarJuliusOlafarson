@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.fragment_black_keys.view.*
 import no.uia.ikt205.piano.databinding.FragmentBlackKeysBinding
 
 
-class blackKeysFragment : Fragment() {
+class BlackKeysFragment : Fragment() {
 
     private var _binding: FragmentBlackKeysBinding? = null
     private val binding get() = _binding!!
@@ -38,8 +38,8 @@ class blackKeysFragment : Fragment() {
             override fun onTouch(v: View?, event: MotionEvent?): Boolean{
                 when(event?.action){
 
-                    MotionEvent.ACTION_DOWN -> this@blackKeysFragment.onKeyDown?.invoke(note)
-                    MotionEvent.ACTION_UP -> this@blackKeysFragment.onKeyUp?.invoke(note)
+                    MotionEvent.ACTION_DOWN -> this@BlackKeysFragment.onKeyDown?.invoke(note)
+                    MotionEvent.ACTION_UP -> this@BlackKeysFragment.onKeyUp?.invoke(note)
                 }
                 return true
             }
@@ -53,7 +53,7 @@ class blackKeysFragment : Fragment() {
 
         @JvmStatic
         fun newInstance(note: String) =
-            blackKeysFragment().apply {
+            BlackKeysFragment().apply {
                 arguments = Bundle().apply {
                     putString("NOTE", note)
                 }

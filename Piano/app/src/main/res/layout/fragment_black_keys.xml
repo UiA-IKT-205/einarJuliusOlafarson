@@ -8,7 +8,7 @@
 
     <Button
         android:id="@+id/BlackKeysButton"
-        android:layout_width="40dp"
+        android:layout_width="80dp"
         android:layout_height="200dp"
         android:background="@drawable/pianokeyshape"
         android:backgroundTint="@color/black"
