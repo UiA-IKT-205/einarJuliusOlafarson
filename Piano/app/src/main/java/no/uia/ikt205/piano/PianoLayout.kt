@@ -1,19 +1,23 @@
 package no.uia.ikt205.piano
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.net.toUri
 import kotlinx.android.synthetic.main.fragment_piano_layout.view.*
 import no.uia.ikt205.piano.data.Note
 import no.uia.ikt205.piano.databinding.FragmentPianoLayoutBinding
 import java.io.File
 import java.io.FileOutputStream
+import java.net.URI
 
 class PianoLayout : Fragment() {
 
+    var onSave: ((file: Uri) -> Unit)? = null
 
     private var _binding:FragmentPianoLayoutBinding ? = null
     private val binding get() = _binding!!
@@ -119,21 +123,10 @@ class PianoLayout : Fragment() {
 
         view.saveScoreBt.setOnClickListener{
             var fileName = view.fileNameTextEdit.text.toString()
-            val path = this.activity?.getExternalFilesDir(null)
-            if(score.count() > 0 && fileName.isNotEmpty() && path != null){
-                fileName = "$fileName.txt"
-                if (!File(path,fileName).exists()){
-                    FileOutputStream(File(path, fileName), true).bufferedWriter().use { writer ->
-                        score.forEach{
-                            writer.write( "${it.toString()}\n")
-                        }
-                    }
-                    Toast.makeText(activity,"File sucessfully saved as $fileName", Toast.LENGTH_LONG).show()
-                    score.clear()
-                }
-                else{
-                    println("This file already exists")
-                }
+            if(score.count() > 0 && fileName.isNotEmpty()){
+                fileName = "$fileName.musikk"
+                val content:String = score.map{it.toString()}.reduce {acc, s -> acc + s + "\n"}
+                saveFile(fileName, content)
             }
             else{
                 println("something is wrong")
@@ -143,4 +136,26 @@ class PianoLayout : Fragment() {
         // Inflate the layout for this fragment
         return view
     }
+
+    private fun saveFile(fileName:String, content:String){
+        val path = this.activity?.getExternalFilesDir(null)
+        val file=File(path,fileName)
+        if (path != null){
+            if (!file.exists()){
+                FileOutputStream(file,true).bufferedWriter().use {writer ->
+                    writer.write(content)
+                }
+
+                this.onSave?.invoke(file.toUri());
+                Toast.makeText(activity,"File sucessfully saved as $fileName", Toast.LENGTH_LONG).show()
+                score.clear()
+            } else {
+                Toast.makeText(activity,"File already exists", Toast.LENGTH_LONG).show()
+            }
+        } else{
+            //no external path
+            Toast.makeText(activity, "No path found", Toast.LENGTH_LONG).show()
+        }
+    }
+
 }
