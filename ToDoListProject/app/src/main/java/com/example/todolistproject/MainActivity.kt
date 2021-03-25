@@ -2,7 +2,11 @@ package com.example.todolistproject
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import com.example.todolistproject.TodoListItem.toDoList
 import com.example.todolistproject.databinding.ActivityMainBinding
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +23,11 @@ class MainActivity : AppCompatActivity() {
         *  */
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Early attempt at having a Fragment changer from main activity
+//        fun changeFragment(fragment: Fragment){
+//            supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
+//        }
 
         /*
         * Todo add the ability to sync with firebase in txt or json form

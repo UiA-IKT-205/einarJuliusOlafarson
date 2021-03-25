@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="Title"
+            android:text="@string/title"
             android:textColor="@color/black"
             android:textSize="11sp"
             android:visibility="gone" />
@@ -42,13 +42,12 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="@string/title"
         android:layout_alignParentLeft="true"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:src="@android:drawable/ic_menu_delete" />
 </androidx.cardview.widget.CardView>
