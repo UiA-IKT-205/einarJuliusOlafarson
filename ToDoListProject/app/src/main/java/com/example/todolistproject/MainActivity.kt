@@ -2,8 +2,6 @@ package com.example.todolistproject
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import com.example.todolistproject.TodoListItem.toDoList
 import com.example.todolistproject.databinding.ActivityMainBinding
 
 

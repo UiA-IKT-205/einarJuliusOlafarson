@@ -1,8 +1,9 @@
-package com.example.todolistproject.TodoListItem
+package com.example.todolistproject.MasterList
 
 import com.example.todolistproject.TodoListItem.ToDoItem
+import kotlin.math.ceil
 
-data class toDoList(val title:String, val items:MutableList<ToDoItem>){
+data class toDoList(val title:String, var items:MutableList<ToDoItem>){
 
     // Updated my data class so it could set some bindings
     // Namely it now gives a completed amount of tasks for the binding
@@ -12,19 +13,27 @@ data class toDoList(val title:String, val items:MutableList<ToDoItem>){
         return items.size
     }
 
-    fun GiveCompletedAmount(): Int {
+    fun GiveCompletedAmount(): Double {
 
-        var amount:Int = 0
-
+        var amount:Double = 0.0
         for (i in items){
             if (i.isDone){
                 amount += 1
             }
         }
-        println("Amount completed in list $amount")
         if (amount > 0){
             amount = (amount/returnLength())*100
         }
         return amount
+    }
+
+    fun returnAllItems(): MutableList<ToDoItem>{
+
+        val listofItems = mutableListOf<ToDoItem>()
+
+        for (i in items){
+            listofItems.add(i)
+        }
+        return listofItems
     }
 }

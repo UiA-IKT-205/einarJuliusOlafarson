@@ -1,11 +1,15 @@
 package com.example.todolistproject.TodoListItem
 
-data class ToDoItem(val description:String, val isDone:Boolean){
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
+data class ToDoItem(val description:String, var isDone:Boolean): Parcelable {
     // Updated data class to be able to toggle its own boolean
     // Helps with binding to the view
-    fun booleanFlip(){
-        isDone != isDone
+
+    fun returnBool(): Boolean{
+        return isDone
     }
 
 }

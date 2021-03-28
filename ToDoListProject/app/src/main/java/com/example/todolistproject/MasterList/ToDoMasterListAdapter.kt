@@ -1,19 +1,20 @@
-package com.example.todolistproject.TodoListItem
+package com.example.todolistproject.MasterList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.RecyclerView
-import com.example.todolistproject.databinding.FragmentToDoMasterListBinding
+import com.example.todolistproject.ListHolder
+import com.example.todolistproject.databinding.ToDoMasterListLayoutBinding
 
 class ToDoMasterListAdapter(private var todomasterlists:List<toDoList>,
-                            private val onlistClicked:(toDoList) -> Unit):
+                            private val onlistClicked:((toDoList) -> Unit)
+):
     RecyclerView.Adapter<ToDoMasterListAdapter.ViewHolder>() {
 
-    class ViewHolder (val binding:FragmentToDoMasterListBinding):RecyclerView.ViewHolder(binding.root){
+    class ViewHolder (val binding:ToDoMasterListLayoutBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(MasterList: toDoList, onListClicked:(toDoList)->Unit){
             binding.ListName.text = MasterList.title
-            binding.listProgress.progress = MasterList.GiveCompletedAmount()
+            binding.listProgress.progress = MasterList.GiveCompletedAmount().toInt()
 
             binding.MasterListGoToList.setOnClickListener {
                 onListClicked(MasterList)
@@ -32,16 +33,21 @@ class ToDoMasterListAdapter(private var todomasterlists:List<toDoList>,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(FragmentToDoMasterListBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return ViewHolder(ToDoMasterListLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
-    public  fun updateList(newLists: List<toDoList>){
+    public fun updateList(newLists: List<toDoList>){
         todomasterlists = newLists
         notifyDataSetChanged()
+        println(todomasterlists)
     }
 
     public fun deleteList(position: Int){
         ToDoMasterListDepositoryManager.instance.deleteList(position)
         updateList(todomasterlists)
+    }
+
+    public fun removeItem(position: Int){
+
     }
 }
