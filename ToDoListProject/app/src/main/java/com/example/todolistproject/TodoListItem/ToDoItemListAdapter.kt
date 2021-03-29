@@ -3,10 +3,7 @@ package com.example.todolistproject.TodoListItem
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.todolistproject.MasterList.ToDoMasterListDepositoryManager
-import com.example.todolistproject.MasterList.toDoList
 import com.example.todolistproject.databinding.ToDoItemLayoutBinding
-import kotlin.reflect.KFunction1
 
 class ToDoItemListAdapter(private var todoItemList:List<ToDoItem>,
 ):

@@ -3,7 +3,6 @@ package com.example.todolistproject.MasterList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.todolistproject.ListHolder
 import com.example.todolistproject.databinding.ToDoMasterListLayoutBinding
 
 class ToDoMasterListAdapter(private var todomasterlists:List<toDoList>,
@@ -36,18 +35,13 @@ class ToDoMasterListAdapter(private var todomasterlists:List<toDoList>,
         return ViewHolder(ToDoMasterListLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
-    public fun updateList(newLists: List<toDoList>){
+    fun updateList(newLists: List<toDoList>){
         todomasterlists = newLists
         notifyDataSetChanged()
-        println(todomasterlists)
     }
 
-    public fun deleteList(position: Int){
+    fun deleteList(position: Int){
         ToDoMasterListDepositoryManager.instance.deleteList(position)
         updateList(todomasterlists)
-    }
-
-    public fun removeItem(position: Int){
-
     }
 }

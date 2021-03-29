@@ -1,7 +1,6 @@
 package com.example.todolistproject.MasterList
 
 import com.example.todolistproject.TodoListItem.ToDoItem
-import kotlin.math.ceil
 
 data class toDoList(val title:String, var items:MutableList<ToDoItem>){
 
@@ -25,15 +24,5 @@ data class toDoList(val title:String, var items:MutableList<ToDoItem>){
             amount = (amount/returnLength())*100
         }
         return amount
-    }
-
-    fun returnAllItems(): MutableList<ToDoItem>{
-
-        val listofItems = mutableListOf<ToDoItem>()
-
-        for (i in items){
-            listofItems.add(i)
-        }
-        return listofItems
     }
 }
