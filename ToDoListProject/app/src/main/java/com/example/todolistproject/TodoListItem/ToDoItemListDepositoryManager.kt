@@ -9,7 +9,6 @@ class ToDoItemListDepositoryManager {
     private lateinit var itemList: MutableList<ToDoItem>
 
     var onItem: ((List<ToDoItem>) -> Unit)? = null
-    var onChange: ((list: toDoList)-> Unit)? = null
 
     fun load(url: String, context: Context) {
 

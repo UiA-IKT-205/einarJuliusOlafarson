@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todolistproject.TodoListItem.ToDoItem
 import com.example.todolistproject.MasterList.ToDoMasterListAdapter
@@ -51,12 +50,8 @@ class ToListLayout : Fragment() {
             println("Change registered")
         }
 
-        // Loading the list in fragment
         context?.let { ToDoMasterListDepositoryManager.instance.load("test", it) }
 
-        // Using the same alertdialog box as before
-        // However I am now using the list methods as shown in the lecture
-        // I also automatically dismiss the box now, it is commented out for testing purposes
         binding.addList.setOnClickListener {
             val listdialogView = LayoutInflater.from(context).inflate(R.layout.alert_box_create_list, null)
             val listBuilder = AlertDialog.Builder(context).setView(listdialogView)
@@ -69,7 +64,7 @@ class ToListLayout : Fragment() {
             listAlertDialog.savenewElement.setOnClickListener{
                 if(listAlertDialog.newElementName.text.toString().isNotEmpty()){
                     addList(listAlertDialog.newElementName.text.toString(), mutableListOf())
-//                    listAlertDialog.dismiss()
+                    listAlertDialog.dismiss()
                 }
             }
         }
@@ -84,16 +79,11 @@ class ToListLayout : Fragment() {
 
     private fun onlistClicked(masterlist: toDoList) {
 
-        /*val intent =Intent(this, BookDetailsActivity::class.java).apply {
-            putExtra(EXTRA_BOOK_INFO, book)
-        }*/
         binding.AppSubtitle.text = masterlist.title
         ListHolder.PickedList = masterlist
 
         val intent = Intent(activity, OverViewList::class.java)
 
         startActivity(intent)
-
-        //startActivityForResult(intent, REQUEST_BOOK_DETAILS)
     }
 }

@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todolistproject.databinding.OverViewListLayoutBinding
@@ -12,11 +13,6 @@ import com.example.todolistproject.TodoListItem.ToDoItem
 import com.example.todolistproject.TodoListItem.ToDoItemListAdapter
 import com.example.todolistproject.TodoListItem.ToDoItemListDepositoryManager
 import kotlinx.android.synthetic.main.alert_box_create_list.*
-
-
-// Will be updated to be an activity for my lists so they can be edited in detail
-
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
 
 class OverViewList : AppCompatActivity() {
@@ -71,7 +67,12 @@ class OverViewList : AppCompatActivity() {
 
     fun addNewItem(itemName: String){
         val newItem = ToDoItem(itemName, false)
-        ToDoItemListDepositoryManager.instance.addItem(newItem, toDoItem)
+        val safetyItem = ToDoItem(itemName, true)
+        if (toDoItem.items.contains(newItem) or toDoItem.items.contains(safetyItem)){
+            Toast.makeText(this,"Todo already exists", Toast.LENGTH_LONG).show()
+        }else {
+            ToDoItemListDepositoryManager.instance.addItem(newItem, toDoItem)
+        }
     }
 
     fun updateProgress(binding: OverViewListLayoutBinding, list: toDoList){
