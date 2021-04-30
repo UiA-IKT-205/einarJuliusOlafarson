@@ -1,3 +1,8 @@
 package com.example.todolistproject.TodoListItem
 
-data class ToDoItem(val description:String, val isDone:Boolean)
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class ToDoItem(val description:String, var isDone:Boolean): Parcelable {
+}

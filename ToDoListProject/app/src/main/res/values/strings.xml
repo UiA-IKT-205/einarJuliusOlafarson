@@ -93,4 +93,9 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="previous_list">previous list</string>
+    <string name="create_new_list">create new list</string>
+    <string name="delete_list">Delete list</string>
+    <string name="name_your_new_list">Name your new list</string>
+    <string name="list_name">List Name</string>
+    <string name="title">Title</string>
 </resources>

@@ -1,33 +1,37 @@
 package com.example.todolistproject
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todolistproject.TodoListItem.ToDoItem
-import com.example.todolistproject.ToDoListMain.TodoList
+import com.example.todolistproject.MasterList.ToDoMasterListAdapter
+import com.example.todolistproject.MasterList.ToDoMasterListDepositoryManager
+import com.example.todolistproject.MasterList.toDoList
 import com.example.todolistproject.databinding.FragmentToListLayoutBinding
-import com.example.todolistproject.TodoListItem.ToDoItemAdapter
+import kotlinx.android.synthetic.main.alert_box_create_list.*
 
+// List holder so i can later create the relevant activity for my list
+class ListHolder{
+    companion object{
+        var PickedList: toDoList? = null
+        var Position: Int = 0
+    }
+}
 
 class ToListLayout : Fragment() {
 
     private var _binding: FragmentToListLayoutBinding ?= null
     private val binding get() = _binding!!
-    private val todoitemtest: MutableList<ToDoItem> = mutableListOf(ToDoItem("Take out trash", false), ToDoItem("Finish homework", false),
-        ToDoItem("Take out trash", false), ToDoItem("Finish homework", false),ToDoItem("Take out trash", false), ToDoItem("Finish homework", false),ToDoItem("Take out trash", false), ToDoItem("Finish homework", false),
-        ToDoItem("Take out trash", false), ToDoItem("Finish homework", false),ToDoItem("Take out trash", false), ToDoItem("Finish homework", false),ToDoItem("Take out trash", false), ToDoItem("Finish homework", false),
-        ToDoItem("Take out trash", false), ToDoItem("Finish homework", false),ToDoItem("Take out trash", false), ToDoItem("Finish homework", false),ToDoItem("Take out trash", false), ToDoItem("Finish homework", false))
-    private val todolistest: MutableList<TodoList> = mutableListOf(TodoList("Test", todoitemtest))
+
+    //Previous arrays have been moved to their own class
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
-
     }
 
     override fun onCreateView(
@@ -35,24 +39,51 @@ class ToListLayout : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         _binding = FragmentToListLayoutBinding.inflate(layoutInflater)
         val view = binding.root
-        binding.todolistrecycler.layoutManager = LinearLayoutManager(context)
-        binding.todolistrecycler.adapter = ToDoItemAdapter(todoitemtest)
+        binding.masterlistListing.layoutManager = LinearLayoutManager(context)
+        binding.masterlistListing.adapter = ToDoMasterListAdapter(emptyList<toDoList>(), this::onlistClicked)
 
-        binding.addList.setOnClickListener {
-            Toast.makeText(context, "Button has been clicked", Toast.LENGTH_SHORT).show()
+        ToDoMasterListDepositoryManager.instance.onList = {
+            (binding.masterlistListing.adapter as ToDoMasterListAdapter).updateList(it)
+            println("Change registered")
         }
 
+        context?.let { ToDoMasterListDepositoryManager.instance.load("test", it) }
+
+        binding.addList.setOnClickListener {
+            val listdialogView = LayoutInflater.from(context).inflate(R.layout.alert_box_create_list, null)
+            val listBuilder = AlertDialog.Builder(context).setView(listdialogView)
+            val listAlertDialog = listBuilder.show()
+
+            listAlertDialog.dismissAlert.setOnClickListener{
+                listAlertDialog.dismiss()
+            }
+
+            listAlertDialog.savenewElement.setOnClickListener{
+                if(listAlertDialog.newElementName.text.toString().isNotEmpty()){
+                    addList(listAlertDialog.newElementName.text.toString(), mutableListOf())
+                    listAlertDialog.dismiss()
+                }
+            }
+        }
         return view
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ToListLayout().apply {
-                arguments = Bundle().apply {
-                }
-            }
+    private fun addList(listName: String, emptyItems: MutableList<ToDoItem>) {
+        val list = toDoList(listName, emptyItems)
+        ToDoMasterListDepositoryManager.instance.addList(list)
+    }
+
+
+    private fun onlistClicked(masterlist: toDoList) {
+
+        binding.AppSubtitle.text = masterlist.title
+        ListHolder.PickedList = masterlist
+
+        val intent = Intent(activity, OverViewList::class.java)
+
+        startActivity(intent)
     }
 }

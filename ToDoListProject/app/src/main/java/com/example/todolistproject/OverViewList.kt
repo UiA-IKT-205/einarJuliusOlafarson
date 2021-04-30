@@ -1,54 +1,82 @@
 package com.example.todolistproject
 
+import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.todolistproject.databinding.OverViewListLayoutBinding
+import com.example.todolistproject.MasterList.toDoList
+import com.example.todolistproject.TodoListItem.ToDoItem
+import com.example.todolistproject.TodoListItem.ToDoItemListAdapter
+import com.example.todolistproject.TodoListItem.ToDoItemListDepositoryManager
+import kotlinx.android.synthetic.main.alert_box_create_list.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-class OverViewList : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class OverViewList : AppCompatActivity() {
+
+    private var binding: OverViewListLayoutBinding? = null
+    private lateinit var toDoItem: toDoList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        binding = OverViewListLayoutBinding.inflate(layoutInflater)
+        setContentView(binding!!.root)
+        val recievedItems = ListHolder
+
+        if(recievedItems != null){
+            toDoItem = recievedItems.PickedList!!
+            Log.i("Details view", toDoItem.toString())
+        } else{
+            finish()
+        }
+
+        binding!!.itemListListing.layoutManager = LinearLayoutManager(this)
+        binding!!.itemListListing.adapter = ToDoItemListAdapter(emptyList<ToDoItem>())
+
+        ToDoItemListDepositoryManager.instance.onItem = {
+            (binding!!.itemListListing.adapter as ToDoItemListAdapter).updateItems(it)
+            updateProgress(binding!!, toDoItem)
+        }
+
+        updateProgress(binding!!, toDoItem)
+        binding!!.listName.text = toDoItem.title
+        ToDoItemListDepositoryManager.instance.updateItems(toDoItem.items)
+
+        binding!!.addItem.setOnClickListener {
+            val listdialogView = LayoutInflater.from(this).inflate(R.layout.alert_box_create_list, null)
+            val listBuilder = AlertDialog.Builder(this).setView(listdialogView)
+            val listAlertDialog = listBuilder.show()
+            listAlertDialog.NewElementorList.text = "Name your new Todo"
+
+            listAlertDialog.dismissAlert.setOnClickListener{
+                listAlertDialog.dismiss()
+            }
+
+            listAlertDialog.savenewElement.setOnClickListener{
+                if(listAlertDialog.newElementName.text.toString().isNotEmpty()){
+                    addNewItem(listAlertDialog.newElementName.text.toString())
+                    updateProgress(binding!!, toDoItem)
+                    listAlertDialog.dismiss()
+                }
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_over_view_list, container, false)
+    fun addNewItem(itemName: String){
+        val newItem = ToDoItem(itemName, false)
+        val safetyItem = ToDoItem(itemName, true)
+        if (toDoItem.items.contains(newItem) or toDoItem.items.contains(safetyItem)){
+            Toast.makeText(this,"Todo already exists", Toast.LENGTH_LONG).show()
+        }else {
+            ToDoItemListDepositoryManager.instance.addItem(newItem, toDoItem)
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment OverViewList.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            OverViewList().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    fun updateProgress(binding: OverViewListLayoutBinding, list: toDoList){
+        binding.listProgress.progress = list.GiveCompletedAmount().toInt()
     }
+
 }
