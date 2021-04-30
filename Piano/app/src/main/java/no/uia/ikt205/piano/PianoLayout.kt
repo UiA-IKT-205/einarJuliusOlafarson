@@ -86,7 +86,6 @@ class PianoLayout : Fragment() {
                     score.add(note)
                 }
             }
-
             fragmentTransaction.add(view.whiteKeysLayout.id, whitePianoKey, "note_$it")
         }
 

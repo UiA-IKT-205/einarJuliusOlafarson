@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         piano.onSave = {
             this.upload(it)
         }
-
     }
 
     private fun upload(file: Uri){
