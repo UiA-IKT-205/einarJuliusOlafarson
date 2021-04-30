@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">TicTacRequest</string>
+    <string name="game_service_key">VRAkqMFGKS</string>
+    <string name="protocol">https://</string>
+    <string name="domain">generic-game-service.herokuapp.com</string>
+    <string name="join_game_path">/%1s/join</string>
+    <string name="pool_game_path">/%1s/poll</string>
+    <string name="update_game_path">/%1s/update</string>
+
+    <string name="base_path">/Game</string>
+</resources>
