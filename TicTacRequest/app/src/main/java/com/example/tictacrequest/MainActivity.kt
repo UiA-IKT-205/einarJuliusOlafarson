@@ -4,13 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.example.tictacrequest.App.Companion.context
-import com.example.tictacrequest.api.GameService
-import com.example.tictacrequest.api.data.Game
-import com.example.tictacrequest.api.data.GameState
 import com.example.tictacrequest.databinding.ActivityMainBinding
 import com.example.tictacrequest.dialogs.CreateGameDialog
 import com.example.tictacrequest.dialogs.GameDialogListener
+import com.example.tictacrequest.dialogs.JoinGameDialog
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), GameDialogListener {
@@ -27,6 +24,7 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
             newgameDialog()
         }
         joinGameButton.setOnClickListener{
+            joingameDialog()
         }
     }
 
@@ -35,9 +33,13 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
         dlg.show(supportFragmentManager,"CreateGameDialogFragment")
     }
 
+    fun joingameDialog(){
+        val dlg = JoinGameDialog()
+        dlg.show(supportFragmentManager, "JoinGameDialogFragment")
+    }
+
     override fun onDialogCreateGame(player: String) {
         Log.d(TAG,player)
-        var user = player
 //        GameHolder.player = mutableListOf<String>(user)
         val intent = Intent(this, GameActivity::class.java)
         intent.putExtra("Player", player)
@@ -47,5 +49,9 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
 
     override fun onDialogJoinGame(player: String, gameId: String) {
         Log.d(TAG, "$player $gameId")
+        val intent = Intent(this, GameActivity::class.java)
+        intent.putExtra("Player", player)
+        intent.putExtra("GameID", gameId)
+        startActivity(intent)
     }
 }

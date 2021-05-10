@@ -2,12 +2,9 @@ package com.example.tictacrequest.dialogs
 
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.example.tictacrequest.GameActivity
-//import com.example.tictacrequest.GameHolder
 import com.example.tictacrequest.databinding.DialogCreateGameBinding
 import java.lang.ClassCastException
 

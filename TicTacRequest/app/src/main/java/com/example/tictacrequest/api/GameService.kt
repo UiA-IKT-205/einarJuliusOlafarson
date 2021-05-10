@@ -45,7 +45,6 @@ object GameService {
         val requestData = JSONObject()
         requestData.put("player", playerId)
         requestData.put("state", JSONArray(state))
-        println(requestData)
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, requestData,
             {
@@ -116,6 +115,7 @@ object GameService {
     }
 
     fun updateGame(players: MutableList<String>, gameId: String, state: GameState, callback: GameServiceCallback){
+        GameID = gameId
         val url = updateGameURL()
         val requestData = JSONObject()
         requestData.put("players", players)

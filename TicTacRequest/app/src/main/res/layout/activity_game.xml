@@ -25,18 +25,19 @@
                 android:id="@+id/zerozero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00">
+                android:text="@string/base_state">
             </Button>
             <Button
                 android:id="@+id/onezero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="">
+                android:text="@string/base_state">
             </Button>
             <Button
                 android:id="@+id/twozero"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:text="@string/base_state">
             </Button>
         </LinearLayout>
         <LinearLayout
@@ -46,17 +47,20 @@
             <Button
                 android:id="@+id/zeroone"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:text="@string/base_state">
             </Button>
             <Button
                 android:id="@+id/oneone"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:text="@string/base_state">
             </Button>
             <Button
                 android:id="@+id/twoone"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:text="@string/base_state">
             </Button>
         </LinearLayout>
         <LinearLayout
@@ -66,17 +70,20 @@
             <Button
                 android:id="@+id/zerotwo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:text="@string/base_state">
             </Button>
             <Button
                 android:id="@+id/onetwo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:text="@string/base_state">
             </Button>
             <Button
                 android:id="@+id/twotwo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:text="@string/base_state">
             </Button>
         </LinearLayout>
     </LinearLayout>
@@ -84,14 +91,50 @@
         android:id="@+id/gameStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/waiting_for_player"
-        android:visibility="invisible"
+        android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.274" />
+
+    <TextView
+        android:id="@+id/gameId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.727" />
+
+    <TextView
+        android:id="@+id/player_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:maxLength="12"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.062"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.338"/>
+
+    <TextView
+        android:id="@+id/player_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:maxLength="12"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.937"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.338"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
