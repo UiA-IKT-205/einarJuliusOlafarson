@@ -24,4 +24,8 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="input_game_id">Input game id</string>
     <string name="waiting_for_player">Waiting for player</string>
+    <string name="base_state">0</string>
+    <string name="first_move">Make the first move to start the game</string>
+    <string name="waiting_for">Waiting for opponent..</string>
+    <string name="your_turn">Your turn!</string>
 </resources>

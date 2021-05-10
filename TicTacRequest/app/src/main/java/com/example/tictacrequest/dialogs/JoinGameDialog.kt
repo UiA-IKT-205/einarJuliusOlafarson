@@ -4,12 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.example.tictacrequest.R
 import com.example.tictacrequest.databinding.DialogJoinGameBinding
 
 class JoinGameDialog : DialogFragment() {
@@ -23,13 +18,13 @@ class JoinGameDialog : DialogFragment() {
             val binding = DialogJoinGameBinding.inflate(inflater)
 
             builder.apply {
-                setTitle("Create game")
-                setPositiveButton("Create") { dialog, which ->
-                    if(binding.username.text.toString() != "" && binding.gameId.text.toString() != ""){
+                setTitle("Join game")
+                setPositiveButton("Join") { dialog, which ->
+                    if((binding.username.text.toString() != "") and (binding.gameId.text.toString() != "") and (binding.gameId.text.length >= 5)){
                         listener.onDialogJoinGame(binding.username.text.toString(), binding.gameId.text.toString())
                     }
                 }
-                setNegativeButton("Cancle") { dialog, which ->
+                setNegativeButton("Cancel") { dialog, which ->
                     dialog.cancel()
                 }
                 setView(binding.root)
