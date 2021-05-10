@@ -1,95 +1,51 @@
 package com.example.tictacrequest
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import com.example.tictacrequest.App.Companion.context
 import com.example.tictacrequest.api.GameService
 import com.example.tictacrequest.api.data.Game
 import com.example.tictacrequest.api.data.GameState
 import com.example.tictacrequest.databinding.ActivityMainBinding
+import com.example.tictacrequest.dialogs.CreateGameDialog
+import com.example.tictacrequest.dialogs.GameDialogListener
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), GameDialogListener {
     private lateinit var binding: ActivityMainBinding
 
+    val TAG:String = "MainActivity"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_main)
-        val newGame: Game = Game(mutableListOf("skost"), GameService.GameID.toString(), listOf(listOf(0,1,0),listOf(0,0,0),listOf(0,0,0)))
-        testVolley.setOnClickListener{
-            createNewGame()
-            //createdNewGame()
+        setContentView(binding.root)
+        createNewGameButton.setOnClickListener{
+            newgameDialog()
         }
-        testVolley2.setOnClickListener{
-            var gameID = putGameId.text.toString()
-            poolGame(gameID)
-            //createdNewGame()
-        }
-
-        testvolley3.setOnClickListener{
-            var gameID = putGameId.text.toString()
-            updateGame(newGame.players, gameID, newGame.state)
+        joinGameButton.setOnClickListener{
         }
     }
 
-    fun createNewGame(){
-        val newGame: Game = Game(mutableListOf("skost"), GameService.GameID.toString(), listOf(listOf(0,0,0),listOf(0,0,0),listOf(0,0,0)))
-        GameService.createGame(newGame.players[0], newGame.state) { game: Game?, err: Int? ->
-            if(err != null){
-                ///TODO("What is the error code? 406 you forgot something in the header. 500 the server di not like what you gave it")
-            } else {
-                if (game != null) {
-                    println(game.gameId)
-                    println(game.players)
-                    println(game.state)
-                /// TODO("We have a game. What to do?)
-                }
-            }
-        }
+    fun newgameDialog(){
+        val dlg = CreateGameDialog()
+        dlg.show(supportFragmentManager,"CreateGameDialogFragment")
     }
 
-    fun joinGame(gameId:String){
-        val newGame: Game = Game(mutableListOf("skoster"), GameService.GameID.toString(), listOf(listOf(0,0,0),listOf(0,0,0),listOf(0,0,0)))
-        GameService.joinGame(newGame.players[0], gameId) { game: Game?, err: Int? ->
-            if(err != null){
-                ///TODO("What is the error code? 406 you forgot something in the header. 500 the server di not like what you gave it")
-            } else {
-                if (game != null) {
-                    println(game.players)
-                    println(game.gameId)
-                    println(game.state)
-                }
-            }
-        }
+    override fun onDialogCreateGame(player: String) {
+        Log.d(TAG,player)
+        var user = player
+//        GameHolder.player = mutableListOf<String>(user)
+        val intent = Intent(this, GameActivity::class.java)
+        intent.putExtra("Player", player)
+        intent.putExtra("GameID", "")
+        startActivity(intent)
     }
 
-    fun poolGame(gameId: String){
-        GameService.poolGame(gameId){ game: Game?, err: Int? ->
-            if(err != null){
-                ///TODO("What is the error code? 406 you forgot something in the header. 500 the server did not like what you gave it")
-            } else {
-                if (game != null) {
-                    println(game.players)
-                    println(game.gameId)
-                    println(game.state)
-                }
-            }
-        }
-    }
-
-    fun updateGame(players:MutableList<String>, gameId: String, state:GameState){
-        GameService.updateGame(players, gameId, state){game: Game?, err:Int? ->
-            if (err != null){
-            ///TODO("What is the error code? 406 you forgot something in the header. 500 the server did not like what you gave it")
-            }else {
-                if (game != null){
-                    println(game.players)
-                    println(game.gameId)
-                    println(game.state)
-                }
-            }
-        }
+    override fun onDialogJoinGame(player: String, gameId: String) {
+        Log.d(TAG, "$player $gameId")
     }
 }

@@ -2,16 +2,13 @@ package com.example.tictacrequest.api
 
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.tictacrequest.App
 import com.example.tictacrequest.R
 import com.example.tictacrequest.api.data.Game
 import com.example.tictacrequest.api.data.GameState
 import com.google.gson.Gson
-import com.google.gson.JsonArray
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -48,6 +45,7 @@ object GameService {
         val requestData = JSONObject()
         requestData.put("player", playerId)
         requestData.put("state", JSONArray(state))
+        println(requestData)
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, requestData,
             {
